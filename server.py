@@ -51,7 +51,7 @@ def communication(conn, conns, clients):
 '''
 def remove_client(conn, conns, clients):
     # Формирование сообщение о покидании чата килентов до удаления списков
-    leave_client_message = ">>> %s leave chat" % clients.get(conn)
+    leave_client_message = ">>> Server: %s leave chat" % clients.get(conn)
 
     # Удаление сокета из списков адресов и имен клиетов
     del conns[conn]
@@ -68,14 +68,14 @@ def remove_client(conn, conns, clients):
 '''
 def add_new_client(conn, addr, conns, clients):
     # Отправка запроса имени клиента
-    conn.send(bytes("Hello! What is your name?", "utf8"))
+    conn.send(bytes(">>> Server: Hello! What is your name?", "utf8"))
     # Получение имени
     client_name = conn.recv(DATASIZE).decode()
     # Запоминаем имя клиента
     clients[conn] = client_name
     # Запоминаем адрес и сокет клиента
     conns[conn] = addr
-    welcome_message = "Welcome %s " % client_name
+    welcome_message = ">>> Server: Welcome %s " % client_name
     conn.send(bytes(welcome_message, "utf8"))
     return client_name
 
@@ -112,7 +112,7 @@ def main():
             print('------------')
 
             # Отправка всем сообщеиея о подключении новго клиента
-            new_client_message = ">>> %s join to chat" % client_name
+            new_client_message = ">>> Server: %s join to chat" % client_name
             for client_socket in conns.keys():
                 # Отправляем на каждый сокет полученное сообщение
                 client_socket.send(bytes(new_client_message, "utf8"))
