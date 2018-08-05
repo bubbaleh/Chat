@@ -115,7 +115,7 @@ def main():
             new_client_message = ">>> Server: %s join to chat" % client_name
             for client_socket in conns.keys():
                 # Отправляем на каждый сокет полученное сообщение
-                client_socket.send(bytes(new_client_message, "utf8"))
+                client_socket.send(bytes(new_client_message+'\n', "utf8"))
 
             # Создание нового потока для общения с новым клиентом
             _thread.start_new_thread(communication, (conn, conns, clients))
